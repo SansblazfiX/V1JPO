@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Plan interactif — Lycée Albert Camus</title>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@800&family=Nunito:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--dark:#1a1a2e;--muted:#64748b;--sh:rgba(0,0,0,.12)}
+html,body{font-family:'Nunito',sans-serif;background:#f0f4f8;color:var(--dark);min-height:100vh}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;background:#fff;box-shadow:0 2px 16px var(--sh);display:flex;align-items:center;justify-content:space-between;padding:10px 20px}
+.nb{font-family:'Baloo 2',cursive;font-weight:800;font-size:1rem;color:var(--dark);text-decoration:none}
+.ns{font-family:'Baloo 2',cursive;font-weight:800;font-size:.82rem;background:#fef3c7;color:#92400e;padding:4px 14px;border-radius:20px;border:2px solid #fbbf24}
+
+/* PAGE */
+.page{padding:72px 14px 40px;max-width:1100px;margin:0 auto}
+h1{font-family:'Baloo 2',cursive;font-size:clamp(1.4rem,4vw,1.9rem);font-weight:800;margin-bottom:2px}
+.sub{font-size:.82rem;color:var(--muted);margin-bottom:14px;font-weight:600}
+
+/* LAYOUT */
+.layout{display:grid;grid-template-columns:1fr 295px;gap:14px;align-items:start}
+
+/* BOITE PLAN */
+.map-box{background:#fff;border-radius:18px;padding:14px;box-shadow:0 4px 24px var(--sh)}
+.map-hd{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;flex-wrap:wrap;gap:8px}
+.map-ttl{font-family:'Baloo 2',cursive;font-weight:800;font-size:.82rem}
+.leg{display:flex;gap:8px;flex-wrap:wrap}
+.li{display:flex;align-items:center;gap:4px;font-size:.58rem;font-weight:700;color:var(--muted)}
+.ld{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+
+/* IMAGE ratio 821x601 = 73.2% */
+.img-wrap{position:relative;width:100%;padding-top:72.08%;border-radius:10px;overflow:visible;background:transparent}
+.img-wrap img{position:absolute;top:0;left:0;width:100%;height:100%;object-fit:fill;display:block;pointer-events:none;border-radius:10px}
+
+/* ═══ BULLES ═══ */
+.bulle{
+  position:absolute;
+  transform:translate(-50%,-50%);
+  cursor:pointer;
+  z-index:10;
+  display:flex;flex-direction:column;align-items:center;gap:3px;
+  transition:transform .18s;
+}
+.bulle:hover{transform:translate(-50%,-50%) scale(1.15)}
+.bulle.on{transform:translate(-50%,-50%) scale(1.2)}
+
+.b-circle{
+  width:42px;height:42px;
+  border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.3rem;
+  border:3px solid rgba(255,255,255,.9);
+  box-shadow:0 3px 14px rgba(0,0,0,.35);
+  animation:bpulse 2.5s ease-in-out infinite;
+  transition:box-shadow .2s;
+  position:relative;
+}
+.bulle.on .b-circle{
+  animation:none;
+  box-shadow:0 0 0 4px rgba(255,255,255,.9), 0 4px 18px rgba(0,0,0,.4);
+}
+@keyframes bpulse{
+  0%,100%{box-shadow:0 3px 14px rgba(0,0,0,.35)}
+  50%{box-shadow:0 3px 14px rgba(0,0,0,.35), 0 0 0 6px rgba(255,255,255,.35)}
+}
+
+/* Badge numéro QR */
+.b-qr{
+  position:absolute;top:-6px;right:-6px;
+  width:18px;height:18px;border-radius:50%;
+  background:#fff;color:var(--dark);
+  font-size:.58rem;font-weight:900;
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 1px 6px rgba(0,0,0,.3);
+  border:1.5px solid currentColor;
+}
+
+.b-label{
+  font-size:.52rem;font-weight:800;
+  background:rgba(255,255,255,.92);
+  padding:2px 7px;border-radius:10px;
+  white-space:nowrap;
+  box-shadow:0 2px 6px rgba(0,0,0,.2);
+  color:var(--dark);
+  max-width:80px;text-align:center;line-height:1.3;
+}
+
+.map-hint{font-size:.6rem;color:var(--muted);text-align:center;margin-top:8px;font-weight:600}
+
+/* ═══ PANNEAU ═══ */
+.panel{background:#fff;border-radius:18px;box-shadow:0 4px 24px var(--sh);overflow:hidden;position:sticky;top:72px}
+.pempty{padding:40px 18px;text-align:center}
+.pei{font-size:2.6rem;display:block;margin-bottom:10px;opacity:.3}
+.pet{font-size:.8rem;color:var(--muted);font-weight:600;line-height:1.65}
+.pfill{display:none}
+.ph{height:150px;position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px}
+.pcl{position:absolute;top:10px;left:10px;background:rgba(0,0,0,.22);border:none;border-radius:50%;width:30px;height:30px;color:#fff;font-size:.85rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .2s}
+.pcl:hover{background:rgba(0,0,0,.45)}
+.pbg{position:absolute;top:10px;right:10px;background:rgba(255,255,255,.88);border-radius:20px;padding:3px 10px;font-size:.58rem;font-weight:800}
+.pem{font-size:3.4rem;line-height:1}
+.phl{font-size:.58rem;color:rgba(255,255,255,.6);font-weight:700;letter-spacing:1px}
+.pb{padding:16px 18px 20px}
+.ptag{font-size:.58rem;font-weight:800;letter-spacing:2px;text-transform:uppercase;display:block;margin-bottom:4px}
+.pnm{font-family:'Baloo 2',cursive;font-size:1.1rem;font-weight:800;margin-bottom:8px;line-height:1.25}
+.pds{font-size:.78rem;color:var(--muted);line-height:1.65;margin-bottom:10px}
+.pch{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:10px}
+.pc{font-size:.62rem;font-weight:700;padding:3px 10px;border-radius:20px}
+.pfl{display:flex;flex-direction:column;gap:5px;margin-bottom:14px}
+.pfi{display:flex;align-items:center;gap:8px;font-size:.76rem;font-weight:600;background:#f8f7ff;border-radius:9px;padding:7px 10px}
+.pbtn{display:block;width:100%;padding:13px;border:none;border-radius:13px;font-family:'Baloo 2',cursive;font-size:.88rem;font-weight:800;cursor:pointer;text-align:center;text-decoration:none;color:#fff;transition:all .2s}
+.pbtn:hover{transform:translateY(-2px);box-shadow:0 5px 16px rgba(0,0,0,.18)}
+.pbtn.off{background:#e2e8f0!important;color:#94a3b8!important;pointer-events:none}
+.bk{display:block;padding:13px;background:transparent;border:2px solid #e2e2f0;border-radius:13px;color:var(--muted);font-family:'Nunito',sans-serif;font-weight:700;font-size:.82rem;text-decoration:none;text-align:center;margin-top:10px;transition:all .3s}
+.bk:hover{border-color:var(--dark);color:var(--dark)}
+
+@media(max-width:860px){
+  .layout{grid-template-columns:1fr}
+  .panel{position:fixed;bottom:0;left:0;right:0;border-radius:20px 20px 0 0;z-index:200;max-height:80vh;overflow-y:auto;transform:translateY(100%);transition:transform .35s ease;top:auto}
+  .panel.open{transform:translateY(0)}
+}
+</style>
+</head>
+<body>
+<nav>
+  <a href="index.html" class="nb">🎓 JPO Albert Camus</a>
+  <div class="ns" id="nscore">⭐ 0 pts</div>
+</nav>
+<div class="page">
+  <h1>🗺️ Plan du Lycée</h1>
+  <p class="sub">Clique sur une bulle pour découvrir le bâtiment et accéder au quiz</p>
+  <div class="layout">
+    <div class="map-box">
+      <div class="map-hd">
+        <span class="map-ttl">📍 Lycée Albert Camus — Firminy</span>
+        <div class="leg">
+          <div class="li"><div class="ld" style="background:#3b82f6"></div>CDI (QR1)</div>
+          <div class="li"><div class="ld" style="background:#10b981"></div>Sciences (QR2)</div>
+          <div class="li"><div class="ld" style="background:#f97316"></div>Pôle Pro (QR3)</div>
+          <div class="li"><div class="ld" style="background:#8b5cf6"></div>Gymnase (QR4)</div>
+        </div>
+      </div>
+
+      <div class="img-wrap" id="mw">
+        <img src="plan_lycee.png" alt="Plan lycée Albert Camus">
+
+        <!-- ═══ BULLES ═══ -->
+
+        <!-- GYMNASE — QR4 -->
+        <div class="bulle" id="b-gymnase" style="left:51%;top:8%" onclick="show('gymnase')">
+          <div class="b-circle" style="background:linear-gradient(135deg,#8b5cf6,#6d28d9)">
+            🏃<span class="b-qr" style="color:#6d28d9">4</span>
+          </div>
+          <div class="b-label">Gymnase</div>
+        </div>
+
+        <!-- RESTAURANT D'APPLICATION -->
+        <div class="bulle" id="b-restaurant" style="left:65%;top:21%" onclick="show('restaurant')">
+          <div class="b-circle" style="background:linear-gradient(135deg,#ef4444,#b91c1c)">🍴</div>
+          <div class="b-label">Restaurant d'appli</div>
+        </div>
+
+        <!-- BÂT 1960 LP -->
+        <div class="bulle" id="b-bat1960lp" style="left:85%;top:23%" onclick="show('bat1960lp')">
+          <div class="b-circle" style="background:linear-gradient(135deg,#388e3c,#1b5e20)">🏫</div>
+          <div class="b-label">Bât. 1960 LP</div>
+        </div>
+
+        <!-- SCIENCES — QR2 -->
+        <div class="bulle" id="b-sciences" style="left:62%;top:50%" onclick="show('sciences')">
+          <div class="b-circle" style="background:linear-gradient(135deg,#10b981,#047857)">
+            🔬<span class="b-qr" style="color:#047857">2</span>
+          </div>
+          <div class="b-label">Sciences</div>
+        </div>
+
+        <!-- CANTINE -->
+        <div class="bulle" id="b-cantine" style="left:22%;top:32%" onclick="show('cantine')">
+          <div class="b-circle" style="background:linear-gradient(135deg,#ffb74d,#f57c00)">🍽️</div>
+          <div class="b-label">Cantine</div>
+        </div>
+
+        <!-- INTERNAT -->
+        <div class="bulle" id="b-internat" style="left:17%;top:51%" onclick="show('internat')">
+          <div class="b-circle" style="background:linear-gradient(135deg,#f48fb1,#e91e63)">🏠</div>
+          <div class="b-label">Internat</div>
+        </div>
+
+        <!-- LOGE / ACCUEIL -->
+        <div class="bulle" id="b-accueil" style="left:43%;top:51%" onclick="show('accueil')">
+          <div class="b-circle" style="background:linear-gradient(135deg,#8d6e63,#5d4037)">🔑</div>
+          <div class="b-label">Accueil</div>
+        </div>
+
+        <!-- CDI / BÂT 1930 — QR1 -->
+        <div class="bulle" id="b-cdi" style="left:54%;top:69%" onclick="show('cdi')">
+          <div class="b-circle" style="background:linear-gradient(135deg,#3b82f6,#1d4ed8)">
+            📚<span class="b-qr" style="color:#1d4ed8">1</span>
+          </div>
+          <div class="b-label">CDI · Bât. 1930</div>
+        </div>
+
+        <!-- BÂT 1900 -->
+        <div class="bulle" id="b-bat1900" style="left:51%;top:86%" onclick="show('bat1900')">
+          <div class="b-circle" style="background:linear-gradient(135deg,#5c6bc0,#3949ab)">🏛️</div>
+          <div class="b-label">Bât. 1900</div>
+        </div>
+
+        <!-- PÔLE STMG/ST2S — QR3 -->
+        <div class="bulle" id="b-stmg" style="left:77%;top:73%" onclick="show('stmg')">
+          <div class="b-circle" style="background:linear-gradient(135deg,#f97316,#c2410c)">
+            💼<span class="b-qr" style="color:#c2410c">3</span>
+          </div>
+          <div class="b-label">Pôle Pro</div>
+        </div>
+
+      </div><!-- fin img-wrap -->
+      <p class="map-hint">Bulles numérotées <strong>1 2 3 4</strong> = emplacements des QR codes du parcours</p>
+    </div>
+
+    <!-- PANNEAU -->
+    <div class="panel" id="panel">
+      <div class="pempty" id="pempty">
+        <span class="pei">👆</span>
+        <p class="pet">Clique sur une bulle du plan pour voir les formations et accéder au quiz !</p>
+      </div>
+      <div class="pfill" id="pfill">
+        <div class="ph" id="ph">
+          <button class="pcl" onclick="closePanel()">✕</button>
+          <span class="pbg" id="pbg"></span>
+          <span class="pem" id="pem">🏫</span>
+          <span class="phl">📷 Photo à venir</span>
+        </div>
+        <div class="pb">
+          <span class="ptag" id="ptag"></span>
+          <div class="pnm" id="pnm"></div>
+          <div class="pds" id="pds"></div>
+          <div class="pch" id="pch"></div>
+          <div class="pfl" id="pfl"></div>
+          <a href="#" class="pbtn" id="pbtn">—</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <a href="plan.html" class="bk">← Retour au parcours</a>
+</div>
+
+<script>
+function getScore(){try{return JSON.parse(localStorage.getItem('jpoScore')||'{}')}catch{return{}}}
+function totalScore(){return Object.values(getScore()).reduce(function(a,b){return a+b},0)}
+document.getElementById('nscore').textContent='⭐ '+totalScore()+' pts';
+
+var DATA={
+  cdi:{emoji:'📚',grad:'linear-gradient(135deg,#3b82f6,#1d4ed8)',badge:'📍 QR Code 1',tag:'Bât. 1930 · Langues & Culture',color:'#3b82f6',name:'CDI — Centre de Documentation',desc:"Le cœur culturel du lycée. Langues vivantes, latin, théâtre et section européenne.",chips:['LV2','Section Européenne','Latin','Théâtre'],formations:[{e:'🌍',n:'Espagnol / Allemand / Italien — LV2'},{e:'🇬🇧',n:'Section Européenne Anglais (DNL)'},{e:'🏛️',n:'Option Latin'},{e:'🎭',n:'Enseignement Théâtre'}],quiz:'quiz-cdi.html'},
+  sciences:{emoji:'🔬',grad:'linear-gradient(135deg,#10b981,#047857)',badge:'📍 QR Code 2',tag:'Bât. 1960 LGT · Sciences',color:'#10b981',name:'Salle de Sciences',desc:"Labos de physique-chimie, SVT et salles dédiées aux spécialités scientifiques et numériques.",chips:['Laboratoires','NSI & SNT','Spécialités sci.'],formations:[{e:'🔢',n:'Maths / Maths Expertes'},{e:'⚗️',n:'Physique-Chimie (SPC)'},{e:'🌿',n:'SVT'},{e:'💻',n:'NSI — Informatique'}],quiz:'quiz-sciences.html'},
+  stmg:{emoji:'💼',grad:'linear-gradient(135deg,#f97316,#c2410c)',badge:'📍 QR Code 3',tag:'Pôle Pro · ST2S & STMG',color:'#f97316',name:'Pôle ST2S / STMG',desc:"Bac techno, bac pro et BTS pour préparer le monde du travail ou les études supérieures.",chips:['Bac Techno','Bac Pro','BTS 2 ans'],formations:[{e:'📊',n:'Bac STMG'},{e:'🏥',n:'Bac ST2S'},{e:'🛒',n:'BTS MCO'},{e:'❤️',n:'BTS SP3S'},{e:'🤝',n:'Bac Pro ASSP'}],quiz:'quiz-stmg.html'},
+  gymnase:{emoji:'🏃',grad:'linear-gradient(135deg,#8b5cf6,#6d28d9)',badge:'📍 QR Code 4',tag:'Gymnase · Sport',color:'#8b5cf6',name:'Gymnase & EPS',desc:"Section sportive Basketball, association sportive multisports et Cordées de la Réussite.",chips:['Section Basket','AS Multisports','Cordées réussite'],formations:[{e:'🏀',n:'Section Sportive Basketball'},{e:'⚽',n:'Association Sportive'},{e:'🌉',n:'Cordées de la Réussite'},{e:'📚',n:'Soutien & Approfondissement'}],quiz:'quiz-gymnase.html'},
+  internat:{emoji:'🏠',grad:'linear-gradient(135deg,#f48fb1,#e91e63)',badge:'🏠 Hébergement',tag:'Internat',color:'#e91e63',name:'Internat',desc:"Accueil des élèves venant de loin, avec études encadrées et repas inclus.",chips:['Garçons & filles','Études le soir','Repas inclus'],formations:[{e:'🛏️',n:'Chambres individuelles et collectives'},{e:'📖',n:'Études encadrées le soir'},{e:'🍽️',n:'Repas midi et soir'}],quiz:null},
+  cantine:{emoji:'🍽️',grad:'linear-gradient(135deg,#ffb74d,#f57c00)',badge:'🍽️ Self',tag:'Cantine',color:'#f57c00',name:'Cantine — Self',desc:"Self-service avec repas équilibrés chaque midi pour tous les élèves.",chips:['Self-service','Repas complets','Tarifs modérés'],formations:[{e:'🥗',n:'Menu équilibré chaque midi'},{e:'🍴',n:'Self-service rapide'}],quiz:null},
+  restaurant:{emoji:'🍴',grad:'linear-gradient(135deg,#ef4444,#b91c1c)',badge:'👨‍🍳 CAP',tag:"Restaurant d'Application",color:'#b91c1c',name:"Restaurant d'Application",desc:"Vrai restaurant où les élèves en CAP s'entraînent en conditions professionnelles réelles.",chips:['Vrais clients','CAP Cuisine','Pro réel'],formations:[{e:'🍽️',n:'CAP Cuisine — 2 ans'},{e:'🥂',n:'CAP Service'},{e:'👨‍🍳',n:'Conditions réelles'}],quiz:null},
+  accueil:{emoji:'🔑',grad:'linear-gradient(135deg,#8d6e63,#5d4037)',badge:'🔑 Admin',tag:'Loge & Secrétariat',color:'#5d4037',name:'Accueil & Secrétariat',desc:"Premier contact du lycée : inscriptions, vie scolaire, absences, infirmerie.",chips:['Inscriptions','Vie scolaire','Infirmerie'],formations:[{e:'📋',n:'Secrétariat & inscriptions'},{e:'👮',n:'Vie scolaire'},{e:'💊',n:'Infirmerie'}],quiz:null},
+  bat1900:{emoji:'🏛️',grad:'linear-gradient(135deg,#5c6bc0,#3949ab)',badge:'🏛️ 1900',tag:'Bâtiment 1900',color:'#3949ab',name:'Bâtiment 1900',desc:"Bâtiment historique du lycée avec les salles de cours de l'enseignement général.",chips:['Historique','Cours généraux','Amphi'],formations:[{e:'📝',n:'Français + Philo + HLP'},{e:'🗺️',n:'Histoire-Géo + HGGSP'},{e:'📈',n:'SES'},{e:'🎭',n:'Amphithéâtre'}],quiz:null},
+  bat1960lp:{emoji:'🏫',grad:'linear-gradient(135deg,#388e3c,#1b5e20)',badge:'🏫 LP',tag:'Bâtiment 1960 LP',color:'#1b5e20',name:'Bâtiment 1960 LP',desc:"Bâtiment du lycée professionnel avec ateliers, formations Bac Pro et CAP.",chips:['Bac Pro','CAP','Ateliers pro'],formations:[{e:'🤝',n:'Bac Pro ASSP'},{e:'🍽️',n:'CAP Cuisine'},{e:'🔧',n:'Ateliers équipés'}],quiz:null}
+};
+
+function show(id){
+  var d=DATA[id]; if(!d)return;
+  document.querySelectorAll('.bulle').forEach(function(b){b.classList.remove('on')});
+  document.getElementById('b-'+id).classList.add('on');
+  document.getElementById('ph').style.background=d.grad;
+  document.getElementById('pem').textContent=d.emoji;
+  var bg=document.getElementById('pbg'); bg.textContent=d.badge; bg.style.color=d.color;
+  document.getElementById('ptag').textContent=d.tag; document.getElementById('ptag').style.color=d.color;
+  document.getElementById('pnm').textContent=d.name;
+  document.getElementById('pds').textContent=d.desc;
+  document.getElementById('pch').innerHTML=d.chips.map(function(c){return'<span class="pc" style="background:'+d.color+'18;color:'+d.color+';border:1px solid '+d.color+'28">'+c+'</span>'}).join('');
+  document.getElementById('pfl').innerHTML=d.formations.map(function(f){return'<div class="pfi"><span>'+f.e+'</span>'+f.n+'</div>'}).join('');
+  var btn=document.getElementById('pbtn');
+  if(d.quiz){btn.href=d.quiz;btn.textContent='🎯 Faire le quiz →';btn.style.background=d.grad;btn.classList.remove('off')}
+  else{btn.href='#';btn.textContent='📌 Pas de quiz pour ce bâtiment';btn.style.background='';btn.classList.add('off')}
+  document.getElementById('pempty').style.display='none';
+  document.getElementById('pfill').style.display='block';
+  document.getElementById('panel').classList.add('open');
+}
+function closePanel(){
+  document.getElementById('pempty').style.display='block';
+  document.getElementById('pfill').style.display='none';
+  document.getElementById('panel').classList.remove('open');
+  document.querySelectorAll('.bulle').forEach(function(b){b.classList.remove('on')});
+}
+</script>
+</body>
+</html>

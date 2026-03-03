@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Parcours — JPO Albert Camus</title>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@800&family=Nunito:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--dark:#1a1a2e;--muted:#64748b;--sh:rgba(0,0,0,.1)}
+html,body{font-family:'Nunito',sans-serif;background:#f0f4f8;color:var(--dark);min-height:100vh}
+
+nav{position:fixed;top:0;left:0;right:0;z-index:99;background:#fff;box-shadow:0 2px 16px var(--sh);display:flex;align-items:center;justify-content:space-between;padding:10px 20px}
+.nb{font-family:'Baloo 2',cursive;font-weight:800;font-size:1rem;color:var(--dark);text-decoration:none}
+.ns{font-family:'Baloo 2',cursive;font-weight:800;font-size:.82rem;background:#fef3c7;color:#92400e;padding:4px 14px;border-radius:20px;border:2px solid #fbbf24}
+
+.page{padding:72px 16px 40px;display:flex;flex-direction:column;align-items:center;max-width:640px;margin:0 auto}
+
+.section-lbl{font-size:.62rem;letter-spacing:2px;color:var(--muted);text-transform:uppercase;font-weight:800;margin-bottom:8px;align-self:flex-start}
+h1{font-family:'Baloo 2',cursive;font-size:clamp(1.6rem,4vw,2.2rem);font-weight:800;margin-bottom:4px;align-self:flex-start}
+.sub{font-size:.85rem;color:var(--muted);margin-bottom:20px;align-self:flex-start;font-weight:600}
+
+/* Score */
+.score-box{width:100%;background:#fff;border-radius:18px;padding:18px 22px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 4px 20px var(--sh);margin-bottom:20px}
+.sc-lbl{font-family:'Baloo 2',cursive;font-weight:800;font-size:1rem}
+.sc-pts{font-family:'Baloo 2',cursive;font-weight:800;font-size:1.7rem;color:#f59e0b}
+
+/* Stops */
+.stops{width:100%;display:flex;flex-direction:column;gap:0}
+
+.stop{
+  display:flex;align-items:center;gap:14px;
+  background:#fff;border-radius:18px;padding:18px 20px;
+  box-shadow:0 4px 20px var(--sh);
+  text-decoration:none;color:inherit;
+  border-left:6px solid transparent;
+  transition:transform .2s, box-shadow .2s;
+  position:relative;
+}
+.stop:hover{transform:translateX(6px);box-shadow:0 6px 28px rgba(0,0,0,.13)}
+.stop.done{opacity:.75}
+
+/* Connecteur vertical entre les stops */
+.connector{width:3px;height:20px;background:#e2e8f0;border-radius:2px;margin-left:36px}
+
+.s-num{font-family:'Baloo 2',cursive;font-size:1.6rem;font-weight:800;min-width:36px;text-align:center;opacity:.2}
+.s-ico{font-size:2rem;flex-shrink:0}
+.s-info{flex:1}
+.s-name{font-family:'Baloo 2',cursive;font-size:1rem;font-weight:800;margin-bottom:3px}
+.s-desc{font-size:.75rem;color:var(--muted);line-height:1.45}
+
+.s-badge{
+  font-size:.62rem;font-weight:800;letter-spacing:.5px;
+  text-transform:uppercase;padding:5px 12px;border-radius:20px;
+  white-space:nowrap;flex-shrink:0;
+}
+.s-todo{background:#f0f0ff;color:#7c7c9a}
+.s-done{background:#d1fae5;color:#065f46}
+
+/* Bouton badge */
+.btn-badge{
+  display:block;width:100%;padding:18px;margin-top:20px;
+  background:linear-gradient(135deg,#f59e0b,#f97316);
+  border:none;border-radius:16px;color:#fff;
+  font-family:'Baloo 2',cursive;font-size:1.05rem;font-weight:800;
+  cursor:pointer;text-decoration:none;text-align:center;
+  transition:all .25s;box-shadow:0 4px 20px rgba(245,158,11,.4);
+}
+.btn-badge:hover{transform:translateY(-3px);box-shadow:0 8px 28px rgba(245,158,11,.5)}
+.btn-badge.locked{opacity:.35;pointer-events:none;cursor:not-allowed}
+
+.btn-plan{
+  display:block;width:100%;padding:14px;margin-top:10px;
+  background:#fff;border:2px solid #e2e8f0;border-radius:14px;
+  color:var(--muted);font-family:'Nunito',sans-serif;font-weight:700;
+  font-size:.85rem;text-decoration:none;text-align:center;
+  transition:all .3s;
+}
+.btn-plan:hover{border-color:var(--dark);color:var(--dark)}
+
+.btn-back{
+  display:block;width:100%;padding:13px;margin-top:8px;
+  background:transparent;border:2px solid #e2e2f0;border-radius:14px;
+  color:var(--muted);font-family:'Nunito',sans-serif;font-weight:700;
+  font-size:.82rem;text-decoration:none;text-align:center;transition:all .3s;
+}
+.btn-back:hover{border-color:var(--dark);color:var(--dark)}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+.fu{animation:fadeUp .5s ease both}
+.d1{animation-delay:.08s}.d2{animation-delay:.16s}.d3{animation-delay:.24s}.d4{animation-delay:.32s}
+</style>
+</head>
+<body>
+<nav>
+  <a href="index.html" class="nb">🎓 JPO Albert Camus</a>
+  <div class="ns" id="nscore">⭐ 0 pts</div>
+</nav>
+
+<div class="page">
+  <p class="section-lbl fu">// votre parcours</p>
+  <h1 class="fu d1">Plan de visite 🗺️</h1>
+  <p class="sub fu d1">Clique sur une salle pour découvrir ses formations et faire le quiz !</p>
+
+  <div class="score-box fu d2">
+    <div class="sc-lbl">⭐ Score total</div>
+    <div class="sc-pts" id="total-pts">0 pts</div>
+  </div>
+
+  <div class="stops fu d2" id="stops"></div>
+
+  <a href="badge.html" class="btn-badge locked fu d3" id="btn-badge">🏆 Voir mon badge final !</a>
+  <a href="plan-interactif.html" class="btn-plan fu d4">🗺️ Voir le plan interactif du lycée</a>
+  <a href="index.html" class="btn-back fu d4">← Retour à l'accueil</a>
+</div>
+
+<script>
+function getScore(){try{return JSON.parse(localStorage.getItem('jpoScore')||'{}')}catch{return{}}}
+function totalScore(){return Object.values(getScore()).reduce(function(a,b){return a+b},0)}
+
+document.getElementById('nscore').textContent='⭐ '+totalScore()+' pts';
+
+var STOPS=[
+  {id:'cdi', num:'01', ico:'📚', name:'CDI — Langues & Culture',
+   desc:'Langues vivantes, Latin, Théâtre, Section Européenne',
+   color:'#3b82f6', grad:'linear-gradient(135deg,#3b82f6,#1d4ed8)',
+   file:'quiz-cdi.html'},
+  {id:'sci', num:'02', ico:'🔬', name:'Sciences & Numérique',
+   desc:'Maths, Physique-Chimie, SVT, NSI, spécialités scientifiques',
+   color:'#10b981', grad:'linear-gradient(135deg,#10b981,#047857)',
+   file:'quiz-sciences.html'},
+  {id:'stmg', num:'03', ico:'💼', name:'Pôle ST2S / STMG',
+   desc:'BTS MCO, BTS SP3S, Bac Pro ASSP, CAP Cuisine...',
+   color:'#f97316', grad:'linear-gradient(135deg,#f97316,#c2410c)',
+   file:'quiz-stmg.html'},
+  {id:'gym', num:'04', ico:'🏃', name:'Gymnase & Sport',
+   desc:'Section Basket, Association sportive, Cordées de la réussite',
+   color:'#8b5cf6', grad:'linear-gradient(135deg,#8b5cf6,#6d28d9)',
+   file:'quiz-gymnase.html'},
+];
+
+function render(){
+  var s=getScore();
+  var total=totalScore();
+  document.getElementById('total-pts').textContent=total+' pts';
+  document.getElementById('nscore').textContent='⭐ '+total+' pts';
+
+  var html='';
+  STOPS.forEach(function(st,i){
+    var done=s[st.id]!==undefined;
+    var pts=done?' · '+s[st.id]+' pts':'';
+    html+='<a href="'+st.file+'" class="stop '+(done?'done':'')+' fu d'+( i+1)+'" style="border-left-color:'+st.color+'">'
+      +'<div class="s-num" style="color:'+st.color+'">'+st.num+'</div>'
+      +'<div class="s-ico">'+st.ico+'</div>'
+      +'<div class="s-info">'
+        +'<div class="s-name" style="color:'+st.color+'">'+st.name+'</div>'
+        +'<div class="s-desc">'+st.desc+'</div>'
+      +'</div>'
+      +'<span class="s-badge '+(done?'s-done':'s-todo')+'">'+(done?'✓ Fait'+pts:'À visiter')+'</span>'
+      +'</a>';
+    if(i<STOPS.length-1) html+='<div class="connector"></div>';
+  });
+  document.getElementById('stops').innerHTML=html;
+
+  var done=Object.keys(s).length;
+  var btn=document.getElementById('btn-badge');
+  if(done>=4){btn.classList.remove('locked')}
+
+  // Message de progression
+  if(done===0) document.querySelector('.sub').textContent='Clique sur une salle pour commencer !';
+  else if(done<4) document.querySelector('.sub').textContent=done+' salle'+(done>1?'s':'')+' visitée'+(done>1?'s':'')+' · Encore '+(4-done)+' à découvrir !';
+  else document.querySelector('.sub').textContent='🎉 Parcours terminé ! Récupère ton badge !';
+}
+
+render();
+</script>
+</body>
+</html>
