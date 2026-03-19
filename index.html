@@ -1,3 +1,6 @@
+Index · HTML
+Copier
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -7,13 +10,13 @@
 <link rel="stylesheet" href="style-global.css">
 <style>
 body { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; }
-
+ 
 .hero-home {
   min-height: 100vh; display: flex; flex-direction: column;
   align-items: center; justify-content: center;
   padding: 30px 20px 50px; position: relative; overflow: hidden;
 }
-
+ 
 /* Bulles décoratives */
 .bubble {
   position: fixed; border-radius: 50%; opacity: .15; pointer-events: none;
@@ -23,20 +26,20 @@ body { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height
   0%   { transform: translateY(110vh) rotate(0deg); }
   100% { transform: translateY(-10vh) rotate(360deg); }
 }
-
+ 
 .home-card {
   background: white; border-radius: 28px; padding: 36px 28px;
   width: 100%; max-width: 520px;
   box-shadow: 0 20px 60px rgba(0,0,0,.25);
   text-align: center; animation: fadeUp .8s .2s ease both;
 }
-
+ 
 .lycee-logo {
   font-size: 4rem; display: block; margin-bottom: 6px;
   animation: bounce 2s ease-in-out infinite;
 }
 @keyframes bounce { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-10px)} }
-
+ 
 .home-title {
   font-family: 'Baloo 2', cursive; font-size: clamp(1.8rem,5vw,2.6rem);
   font-weight: 800; color: #1a1a2e; line-height: 1.2; margin-bottom: 4px;
@@ -45,14 +48,14 @@ body { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height
   font-size: .85rem; color: #7c7c9a; font-weight: 600;
   letter-spacing: 1px; text-transform: uppercase; margin-bottom: 24px;
 }
-
+ 
 .home-desc {
   font-size: .95rem; color: #4a4a6a; line-height: 1.7;
   margin-bottom: 28px; padding: 16px;
   background: #f8f7ff; border-radius: 16px;
   border-left: 4px solid #667eea;
 }
-
+ 
 /* Chips parcours */
 .parcours-row {
   display: grid; grid-template-columns: repeat(2,1fr);
@@ -66,7 +69,7 @@ body { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height
 .pc-icon { font-size: 1.8rem; display: block; margin-bottom: 6px; }
 .pc-name { font-family: 'Baloo 2', cursive; font-weight: 800; font-size: .78rem; }
 .pc-sub  { font-size: .65rem; margin-top: 2px; opacity: .75; }
-
+ 
 /* Infos */
 .info-row {
   display: flex; gap: 10px; margin-bottom: 24px;
@@ -76,7 +79,7 @@ body { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height
   text-align: center; font-size: .75rem; font-weight: 700; color: #4a4a6a;
 }
 .info-chip span { display: block; font-size: 1.2rem; margin-bottom: 4px; }
-
+ 
 /* Bouton start */
 .btn-start {
   display: block; padding: 18px;
@@ -88,7 +91,7 @@ body { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height
   box-shadow: 0 4px 20px rgba(102,126,234,.5);
 }
 .btn-start:hover { transform: translateY(-3px); box-shadow: 0 8px 30px rgba(102,126,234,.6); }
-
+ 
 .home-footer {
   margin-top: 16px; font-size: .72rem; color: rgba(255,255,255,.7);
   text-align: center; font-weight: 600;
@@ -96,26 +99,26 @@ body { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height
 </style>
 </head>
 <body>
-
+ 
 <!-- Bulles décoratives -->
 <div class="bubble" style="width:60px;height:60px;left:10%;background:#fbbf24;animation-duration:8s;animation-delay:0s"></div>
 <div class="bubble" style="width:40px;height:40px;left:25%;background:#10b981;animation-duration:6s;animation-delay:2s"></div>
 <div class="bubble" style="width:80px;height:80px;left:60%;background:#f97316;animation-duration:10s;animation-delay:1s"></div>
 <div class="bubble" style="width:50px;height:50px;left:80%;background:#3b82f6;animation-duration:7s;animation-delay:3s"></div>
 <div class="bubble" style="width:35px;height:35px;left:45%;background:#8b5cf6;animation-duration:9s;animation-delay:4s"></div>
-
+ 
 <div class="hero-home">
   <div class="home-card">
-
+ 
     <span class="lycee-logo">🎓</span>
     <h1 class="home-title">Journée Portes Ouvertes</h1>
     <p class="home-subtitle">Lycée Albert Camus · Firminy · 2026</p>
-
+ 
     <div class="home-desc">
       Bienvenue ! Partez à la découverte du lycée. À chaque arrêt, découvrez nos formations et répondez à un quiz pour
       gagner des points ! 🌟
     </div>
-
+ 
     <!-- Parcours -->
     <div class="parcours-row">
       <div class="parcours-chip" style="background:#dbeafe;color:#1d4ed8">
@@ -138,23 +141,35 @@ body { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height
         <div class="pc-name">Gymnase</div>
         <div class="pc-sub">Sports</div>
       </div>
+      <!-- Nouvelle case 1 -->
+      <div class="parcours-chip" style="background:#fce7f3;color:#9d174d">
+        <span class="pc-icon">🌟</span>
+        <div class="pc-name">Dispositifs d'aide et de soutien</div>
+        <div class="pc-sub">Cordée de la réussite, vacances scolaires...</div>
+      </div>
+      <!-- Nouvelle case 2 -->
+      <div class="parcours-chip" style="background:#ccfbf1;color:#0f766e">
+        <span class="pc-icon">🌿</span>
+        <div class="pc-name">Accompagnement santé et santé mentale</div>
+        <div class="pc-sub">Espace ZEN, tutorat, EVARS</div>
+      </div>
     </div>
-
+ 
     <!-- Infos -->
     <div class="info-row">
       <div class="info-chip"><span>📍</span>4 arrêts</div>
       <div class="info-chip"><span>⏱️</span>~25 min</div>
       <div class="info-chip"><span>🏆</span>Badge à gagner</div>
     </div>
-
+ 
     <a href="plan.html" class="btn-start" onclick="resetScore()">
       ▶ &nbsp; Démarrer la visite !
     </a>
-
+ 
   </div>
-
+ 
 </div>
-
+ 
 <script src="script.js"></script>
 </body>
 </html>
