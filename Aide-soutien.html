@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aide & Soutien — Quiz JPO</title>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@700;800&family=Nunito:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--c:#be185d;--cd:#9d174d;--cl:#fce7f3;--dark:#1a1a2e;--muted:#64748b;--bg:#fdf2f8;--sh:rgba(190,24,93,.18)}
+html,body{font-family:'Nunito',sans-serif;background:var(--bg);min-height:100vh}
+nav{position:fixed;top:0;left:0;right:0;z-index:99;background:#fff;box-shadow:0 2px 16px rgba(0,0,0,.08);display:flex;align-items:center;justify-content:space-between;padding:10px 20px}
+.nb{font-family:'Baloo 2',cursive;font-weight:800;font-size:1rem;color:var(--dark);text-decoration:none}
+.ns{font-family:'Baloo 2',cursive;font-weight:800;font-size:.82rem;background:#fef3c7;color:#92400e;padding:4px 14px;border-radius:20px;border:2px solid #fbbf24}
+.page{max-width:640px;margin:0 auto;padding:76px 16px 50px;display:flex;flex-direction:column;gap:16px}
+.hero{border-radius:24px;padding:28px 24px 24px;background:linear-gradient(135deg,var(--c),var(--cd));position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-50px;right:-50px;width:200px;height:200px;border-radius:50%;background:rgba(255,255,255,.1)}
+.hero::after{content:'';position:absolute;bottom:-40px;left:-30px;width:140px;height:140px;border-radius:50%;background:rgba(255,255,255,.07)}
+.htag{display:inline-block;background:rgba(255,255,255,.22);color:#fff;font-size:.65rem;font-weight:800;letter-spacing:2px;text-transform:uppercase;padding:4px 14px;border-radius:20px;margin-bottom:12px;position:relative;z-index:1}
+.hico{font-size:3.2rem;display:block;margin-bottom:8px;position:relative;z-index:1;animation:bob 2.5s ease-in-out infinite}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+.htitle{font-family:'Baloo 2',cursive;font-size:clamp(1.8rem,5vw,2.4rem);font-weight:800;color:#fff;line-height:1.15;margin-bottom:6px;position:relative;z-index:1}
+.hsub{font-size:.88rem;color:rgba(255,255,255,.85);line-height:1.6;position:relative;z-index:1}
+.card{background:#fff;border-radius:20px;padding:22px;box-shadow:0 4px 20px rgba(0,0,0,.07)}
+.ctitle{font-family:'Baloo 2',cursive;font-weight:800;font-size:.95rem;color:var(--c);margin-bottom:14px}
+.fgrid{display:flex;flex-direction:column;gap:10px}
+.fi{display:flex;align-items:flex-start;gap:12px;background:var(--bg);border-radius:14px;padding:12px 14px;border-left:4px solid var(--cl);transition:transform .2s}
+.fi:hover{transform:translateX(4px)}
+.fie{font-size:1.6rem;flex-shrink:0;margin-top:1px}
+.fin{font-weight:800;font-size:.88rem;color:var(--dark);margin-bottom:2px}
+.fid{font-size:.76rem;color:var(--muted);line-height:1.5}
+.qcard{background:#fff;border-radius:20px;padding:22px;box-shadow:0 4px 20px rgba(0,0,0,.07)}
+.qctitle{font-family:'Baloo 2',cursive;font-weight:800;font-size:.95rem;color:var(--c);margin-bottom:16px}
+.qnum{font-size:.62rem;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:6px;display:block}
+.qbar{display:flex;gap:5px;margin-bottom:18px}
+.qbd{flex:1;height:6px;border-radius:3px;background:#e2e8f0;transition:background .3s}
+.qbd.done{background:#10b981}.qbd.cur{background:var(--c)}
+.qquestion{font-family:'Baloo 2',cursive;font-size:1.05rem;font-weight:700;color:var(--dark);margin-bottom:8px;line-height:1.5}
+.qhint{font-size:.75rem;color:var(--muted);font-weight:700;margin-bottom:14px;background:var(--bg);padding:6px 12px;border-radius:8px;display:inline-block}
+.choices{display:flex;flex-direction:column;gap:9px;margin-bottom:16px}
+
+/* Choix normal (radio) */
+.choice{display:flex;align-items:center;gap:12px;background:var(--bg);border:2px solid #e2e8f0;border-radius:14px;padding:11px 14px;cursor:pointer;transition:all .18s;font-weight:700;font-size:.88rem;text-align:left;width:100%;font-family:'Nunito',sans-serif}
+.choice:hover{background:var(--cl);border-color:var(--c);transform:translateX(3px)}
+.choice.selected{border-color:var(--c);background:var(--cl)}
+.choice.show-ok{background:#dcfce7;border-color:#16a34a;color:#15803d}
+.choice.wrong{background:#fee2e2;border-color:#dc2626;color:#dc2626}
+.cletter{width:32px;height:32px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:.8rem;flex-shrink:0;box-shadow:0 2px 6px rgba(0,0,0,.1)}
+.choice.show-ok .cletter{background:#16a34a;color:#fff}
+.choice.wrong .cletter{background:#dc2626;color:#fff}
+
+/* Choix multiple (checkbox) */
+.choice-multi{display:flex;align-items:center;gap:12px;background:var(--bg);border:2px solid #e2e8f0;border-radius:14px;padding:11px 14px;cursor:pointer;transition:all .18s;font-weight:700;font-size:.88rem;text-align:left;width:100%;font-family:'Nunito',sans-serif}
+.choice-multi:hover{background:var(--cl);border-color:var(--c);transform:translateX(3px)}
+.choice-multi.selected{border-color:var(--c);background:var(--cl)}
+.choice-multi.show-ok{background:#dcfce7;border-color:#16a34a;color:#15803d}
+.choice-multi.wrong{background:#fee2e2;border-color:#dc2626;color:#dc2626}
+.ccheck{width:32px;height:32px;border-radius:8px;background:#fff;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:.9rem;flex-shrink:0;box-shadow:0 2px 6px rgba(0,0,0,.1);border:2px solid #e2e8f0;transition:all .18s}
+.choice-multi.selected .ccheck{background:var(--c);border-color:var(--c);color:#fff}
+.choice-multi.show-ok .ccheck{background:#16a34a;border-color:#16a34a;color:#fff}
+.choice-multi.wrong .ccheck{background:#dc2626;border-color:#dc2626;color:#fff}
+
+.btn-val{width:100%;padding:15px;border:none;border-radius:14px;font-family:'Baloo 2',cursive;font-size:.98rem;font-weight:800;cursor:pointer;background:var(--c);color:#fff;transition:all .2s}
+.btn-val:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 6px 20px var(--sh)}
+.btn-val:disabled{opacity:.4;cursor:not-allowed}
+.feedback{margin-top:12px;padding:12px 16px;border-radius:13px;font-weight:800;font-size:.85rem;text-align:center;display:none}
+.feedback.ok{background:#dcfce7;color:#15803d;display:block}
+.feedback.bad{background:#fee2e2;color:#dc2626;display:block}
+.feedback.almost{background:#fef3c7;color:#92400e;display:block}
+.result{background:#fff;border-radius:24px;padding:36px 24px;text-align:center;box-shadow:0 8px 32px rgba(0,0,0,.1);display:none}
+.ricon{font-size:4.5rem;display:block;margin-bottom:12px;animation:pop .5s .1s ease both}
+@keyframes pop{from{transform:scale(0);opacity:0}to{transform:scale(1);opacity:1}}
+.rtitle{font-family:'Baloo 2',cursive;font-size:2rem;font-weight:800;color:var(--dark);margin-bottom:8px}
+.rpts{font-family:'Baloo 2',cursive;font-size:2.6rem;font-weight:800;color:var(--c);margin-bottom:14px}
+.rmsg{font-size:.9rem;color:var(--muted);line-height:1.7;margin-bottom:24px;padding:0 8px}
+.btn-next{display:block;width:100%;padding:16px;background:linear-gradient(135deg,var(--c),var(--cd));border:none;border-radius:16px;font-family:'Baloo 2',cursive;font-size:1rem;font-weight:800;color:#fff;cursor:pointer;text-decoration:none;text-align:center;transition:all .25s;box-shadow:0 4px 16px var(--sh)}
+.btn-next:hover{transform:translateY(-3px)}
+.already{background:#dcfce7;border:2px solid #16a34a;border-radius:16px;padding:16px;text-align:center;font-weight:800;font-size:.88rem;color:#15803d;display:none}
+.btn-back{display:block;width:100%;padding:13px;background:transparent;border:2px solid #e2e8f0;border-radius:14px;color:var(--muted);font-family:'Nunito',sans-serif;font-weight:700;font-size:.82rem;text-decoration:none;text-align:center;transition:all .3s}
+.btn-back:hover{border-color:var(--dark);color:var(--dark)}
+.confetti-wrap{position:fixed;top:0;left:0;right:0;bottom:0;pointer-events:none;z-index:200;display:none}
+.cf{position:absolute;animation:fall linear forwards}
+@keyframes fall{0%{transform:translateY(-20px) rotate(0deg);opacity:1}100%{transform:translateY(110vh) rotate(720deg);opacity:0}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+.fu{animation:fadeUp .5s ease both}.d1{animation-delay:.1s}.d2{animation-delay:.2s}.d3{animation-delay:.3s}
+</style>
+</head>
+<body>
+<div class="confetti-wrap" id="confetti"></div>
+<nav><a href="index.html" class="nb">🎓 JPO Albert Camus</a><div class="ns" id="nscore">⭐ 0 pts</div></nav>
+<div class="page">
+
+  <div class="hero fu">
+    <span class="htag">📍 Arrêt 5 · Aide & Soutien</span>
+    <span class="hico">🌟</span>
+    <h1 class="htitle">Dispositifs d'aide et de soutien</h1>
+    <p class="hsub">Cordée de la réussite, école ouverte, tutorat… Le lycée t'accompagne à chaque étape !</p>
+  </div>
+
+  <div class="card fu d1">
+    <div class="ctitle">🤝 Les dispositifs disponibles</div>
+    <div class="fgrid">
+      <div class="fi">
+        <span class="fie">📝</span>
+        <div>
+          <div class="fin">Dédoublement des cours de Français</div>
+          <div class="fid">En 2nde et 1ère, les classes de français sont dédoublées pour un meilleur suivi de chaque élève.</div>
+        </div>
+      </div>
+      <div class="fi">
+        <span class="fie">🏫</span>
+        <div>
+          <div class="fin">Cordées de la Réussite</div>
+          <div class="fid">Des partenariats avec l'enseignement supérieur (grandes écoles, universités) pour encourager l'ambition des élèves et ouvrir des horizons !</div>
+        </div>
+      </div>
+      <div class="fi">
+        <span class="fie">☀️</span>
+        <div>
+          <div class="fin">École Ouverte — Vacances & Mercredis</div>
+          <div class="fid">Pendant les vacances scolaires et le mercredi après-midi, le lycée propose des stages, activités sportives, sorties culturelles et du tutorat.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="qcard fu d2" id="qcard">
+    <div class="qctitle">🎯 Quiz — Teste tes connaissances !</div>
+    <div id="qzone"></div>
+  </div>
+
+  <div class="result" id="result">
+    <span class="ricon" id="ricon">🎉</span>
+    <div class="rtitle" id="rtitle">Bravo !</div>
+    <div class="rpts" id="rpts">0 pts</div>
+    <div class="rmsg" id="rmsg"></div>
+    <a href="plan.html" class="btn-next">➡️ Retour au parcours</a>
+  </div>
+  <div class="already" id="already">✅ Tu as déjà visité cette salle ! Direction la prochaine étape.</div>
+  <a href="plan.html" class="btn-back fu d3">← Retour au plan</a>
+</div>
+
+<script>
+function getScore(){try{return JSON.parse(localStorage.getItem('jpoScore')||'{}')}catch{return{}}}
+function addScore(id,pts){var s=getScore();s[id]=(s[id]||0)+pts;localStorage.setItem('jpoScore',JSON.stringify(s))}
+function totalScore(){return Object.values(getScore()).reduce(function(a,b){return a+b},0)}
+function isDone(id){return getScore()[id]!==undefined}
+document.getElementById('nscore').textContent='⭐ '+totalScore()+' pts';
+
+// multi:true = toutes les cases doivent être cochées
+var QS=[
+  {
+    q:"Avec quelles écoles le lycée a-t-il des Cordées de la Réussite ?",
+    hint:"💡 Plusieurs réponses correctes — tu dois toutes les sélectionner !",
+    choices:["France Télécom (école d'ingénieur·es)","IFSI du CHU (école de soins)","IEP (Institut d'études politiques)","INSA (école d'ingénieur·es)","Faculté de médecine","EN3S (École nationale supérieure de la sécurité sociale)"],
+    multi:true,
+    pts:10,
+    bravo:"Parfait ! Le lycée est partenaire de toutes ces établissements !",
+    expl:"Toutes ces écoles font partie des Cordées de la Réussite du lycée Albert Camus !"
+  },
+  {
+    q:"L'École Ouverte propose quelles activités pendant les vacances et le mercredi ?",
+    hint:"💡 Plusieurs réponses correctes — tu dois toutes les sélectionner !",
+    choices:["Stage de mathématiques","Activités sportives : escalade, canyoning, VTT","Visite de musée et activités de loisirs","Tutorat confiance en soi"],
+    multi:true,
+    pts:10,
+    bravo:"Excellent ! Toutes ces activités sont proposées à l'École Ouverte !",
+    expl:"L'École Ouverte propose toutes ces activités : stages, sport, culture et tutorat !"
+  }
+];
+
+if(isDone('aide')){document.getElementById('already').style.display='block';document.getElementById('qcard').style.display='none';}
+
+var cur=0, answered=false, sesScore=0;
+var selectedMulti=[];
+
+function renderQ(){
+  var q=QS[cur];
+  selectedMulti=[];
+  var bar=QS.map(function(_,i){return'<div class="qbd '+(i<cur?'done':i===cur?'cur':'')+'"></div>'}).join('');
+  var hint=q.hint?'<div class="qhint">'+q.hint+'</div>':'';
+
+  var choicesHTML='';
+  if(q.multi){
+    choicesHTML=q.choices.map(function(c,i){
+      return '<button class="choice-multi" onclick="pickMulti('+i+')" id="ch'+i+'"><span class="ccheck" id="ck'+i+'"></span>'+c+'</button>';
+    }).join('');
+  } else {
+    choicesHTML=q.choices.map(function(c,i){
+      return '<button class="choice" onclick="pick('+i+')" id="ch'+i+'"><span class="cletter">'+['A','B','C','D','E','F'][i]+'</span>'+c+'</button>';
+    }).join('');
+  }
+
+  document.getElementById('qzone').innerHTML=
+    '<span class="qnum">Question '+(cur+1)+' / '+QS.length+'</span>'+
+    '<div class="qbar">'+bar+'</div>'+
+    '<div class="qquestion">'+q.q+'</div>'+
+    hint+
+    '<div class="choices" id="choices">'+choicesHTML+'</div>'+
+    '<button class="btn-val" id="bval" onclick="validate()" disabled>Valider ma réponse ✓</button>'+
+    '<div class="feedback" id="fb"></div>';
+  answered=false;
+}
+
+// Sélection simple
+window.pick=function(i){
+  if(answered)return;
+  document.querySelectorAll('.choice').forEach(function(c){c.classList.remove('selected')});
+  document.getElementById('ch'+i).classList.add('selected');
+  document.getElementById('bval').disabled=false;
+  document.getElementById('bval').dataset.ch=i;
+};
+
+// Sélection multiple (checkbox)
+window.pickMulti=function(i){
+  if(answered)return;
+  var idx=selectedMulti.indexOf(i);
+  var btn=document.getElementById('ch'+i);
+  var ck=document.getElementById('ck'+i);
+  if(idx===-1){
+    selectedMulti.push(i);
+    btn.classList.add('selected');
+    ck.textContent='✓';
+  } else {
+    selectedMulti.splice(idx,1);
+    btn.classList.remove('selected');
+    ck.textContent='';
+  }
+  document.getElementById('bval').disabled=(selectedMulti.length===0);
+};
+
+window.validate=function(){
+  if(answered)return;
+  answered=true;
+  var q=QS[cur];
+  var fb=document.getElementById('fb');
+  document.getElementById('bval').disabled=true;
+
+  if(q.multi){
+    var total=q.choices.length;
+    var selected=selectedMulti.slice().sort();
+    var all=q.choices.map(function(_,i){return i}).sort();
+    var isAllCorrect=(selected.join(',')==all.join(','));
+
+    // Afficher toutes les cases en vert
+    q.choices.forEach(function(_,i){
+      document.getElementById('ch'+i).classList.add('show-ok');
+      document.getElementById('ck'+i).textContent='✓';
+    });
+
+    if(isAllCorrect){
+      sesScore+=q.pts;
+      fb.className='feedback ok';
+      fb.textContent='✅ '+q.bravo+' (+'+q.pts+' pts)';
+    } else {
+      var missing=total-selectedMulti.length;
+      fb.className='feedback almost';
+      if(missing>0){
+        fb.textContent='🟡 Oui… mais pas seulement ! Il manquait encore '+missing+' réponse'+(missing>1?'s':'')+'. '+q.expl;
+      } else {
+        fb.textContent='🟡 Presque ! Certaines réponses n\'étaient pas toutes sélectionnées. '+q.expl;
+      }
+    }
+  } else {
+    var chosen=parseInt(document.getElementById('bval').dataset.ch);
+    document.querySelectorAll('.choice').forEach(function(c,i){
+      if(i===q.ok)c.classList.add('show-ok');
+      else if(i===chosen&&chosen!==q.ok)c.classList.add('wrong');
+    });
+    if(chosen===q.ok){
+      sesScore+=q.pts;
+      fb.className='feedback ok';
+      fb.textContent='✅ '+q.bravo+' (+'+q.pts+' pts)';
+    } else {
+      fb.className='feedback bad';
+      fb.textContent='❌ '+q.expl;
+    }
+  }
+
+  setTimeout(function(){
+    var isLast=cur===QS.length-1;
+    var btn=document.getElementById('bval');
+    btn.disabled=false;
+    btn.textContent=isLast?'🏁 Voir mon score !':'➡️ Question suivante';
+    btn.onclick=isLast?finish:next;
+  },1500);
+};
+
+function next(){cur++;renderQ();}
+
+function finish(){
+  addScore('aide',sesScore);
+  document.getElementById('qcard').style.display='none';
+  var r=document.getElementById('result');
+  r.style.display='block';
+  document.getElementById('rpts').textContent=sesScore+' pts';
+  document.getElementById('nscore').textContent='⭐ '+totalScore()+' pts';
+  var pct=sesScore/20;
+  if(pct===1){
+    document.getElementById('ricon').textContent='🏆';
+    document.getElementById('rtitle').textContent='Score parfait !';
+    document.getElementById('rmsg').textContent='Incroyable ! Tu connais parfaitement tous les dispositifs d\'aide du lycée. Bravo !';
+    showConfetti();
+  } else if(pct>=0.5){
+    document.getElementById('ricon').textContent='🌟';
+    document.getElementById('rtitle').textContent='Très bien !';
+    document.getElementById('rmsg').textContent='Belle performance ! Tu as bien découvert les dispositifs de soutien. Direction la prochaine salle !';
+  } else {
+    document.getElementById('ricon').textContent='💪';
+    document.getElementById('rtitle').textContent='Bien joué !';
+    document.getElementById('rmsg').textContent='Tu as découvert les dispositifs d\'aide du lycée ! Continue la visite !';
+  }
+}
+
+function showConfetti(){
+  var w=document.getElementById('confetti');
+  w.style.display='block';
+  var colors=['#be185d','#10b981','#f97316','#8b5cf6','#fbbf24','#ef4444'];
+  for(var i=0;i<60;i++){
+    var p=document.createElement('div');
+    p.className='cf';
+    p.style.cssText='left:'+Math.random()*100+'%;width:'+(6+Math.random()*8)+'px;height:'+(6+Math.random()*8)+'px;background:'+colors[~~(Math.random()*colors.length)]+';border-radius:'+(Math.random()>.5?'50%':'3px')+';animation-duration:'+(2+Math.random()*3)+'s;animation-delay:'+Math.random()*2+'s;';
+    w.appendChild(p);
+  }
+  setTimeout(function(){w.style.display='none';w.innerHTML=''},6000);
+}
+
+renderQ();
+</script>
+</body>
+</html>

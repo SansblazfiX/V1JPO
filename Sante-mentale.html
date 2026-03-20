@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Santé & Bien-être — JPO</title>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@700;800&family=Nunito:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--c:#0f766e;--cd:#065f46;--cl:#ccfbf1;--dark:#1a1a2e;--muted:#64748b;--bg:#f0fdf9;--sh:rgba(15,118,110,.18)}
+html,body{font-family:'Nunito',sans-serif;background:var(--bg);min-height:100vh}
+nav{position:fixed;top:0;left:0;right:0;z-index:99;background:#fff;box-shadow:0 2px 16px rgba(0,0,0,.08);display:flex;align-items:center;justify-content:space-between;padding:10px 20px}
+.nb{font-family:'Baloo 2',cursive;font-weight:800;font-size:1rem;color:var(--dark);text-decoration:none}
+.ns{font-family:'Baloo 2',cursive;font-weight:800;font-size:.82rem;background:#fef3c7;color:#92400e;padding:4px 14px;border-radius:20px;border:2px solid #fbbf24}
+.page{max-width:640px;margin:0 auto;padding:76px 16px 50px;display:flex;flex-direction:column;gap:16px}
+
+/* Hero */
+.hero{border-radius:24px;padding:28px 24px 24px;background:linear-gradient(135deg,var(--c),var(--cd));position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-50px;right:-50px;width:200px;height:200px;border-radius:50%;background:rgba(255,255,255,.1)}
+.hero::after{content:'';position:absolute;bottom:-40px;left:-30px;width:140px;height:140px;border-radius:50%;background:rgba(255,255,255,.07)}
+.htag{display:inline-block;background:rgba(255,255,255,.22);color:#fff;font-size:.65rem;font-weight:800;letter-spacing:2px;text-transform:uppercase;padding:4px 14px;border-radius:20px;margin-bottom:12px;position:relative;z-index:1}
+.hico{font-size:3.2rem;display:block;margin-bottom:8px;position:relative;z-index:1;animation:bob 2.5s ease-in-out infinite}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+.htitle{font-family:'Baloo 2',cursive;font-size:clamp(1.8rem,5vw,2.4rem);font-weight:800;color:#fff;line-height:1.15;margin-bottom:6px;position:relative;z-index:1}
+.hsub{font-size:.88rem;color:rgba(255,255,255,.85);line-height:1.6;position:relative;z-index:1}
+
+/* Card */
+.card{background:#fff;border-radius:20px;padding:22px;box-shadow:0 4px 20px rgba(0,0,0,.07)}
+.ctitle{font-family:'Baloo 2',cursive;font-weight:800;font-size:.95rem;color:var(--c);margin-bottom:14px}
+.fgrid{display:flex;flex-direction:column;gap:10px}
+.fi{display:flex;align-items:flex-start;gap:12px;background:var(--bg);border-radius:14px;padding:14px 16px;border-left:4px solid var(--cl);transition:transform .2s}
+.fi:hover{transform:translateX(4px)}
+.fie{font-size:1.8rem;flex-shrink:0;margin-top:2px}
+.fin{font-weight:800;font-size:.9rem;color:var(--dark);margin-bottom:3px}
+.fid{font-size:.76rem;color:var(--muted);line-height:1.55}
+
+/* Message de fin */
+.done-box{background:#fff;border-radius:20px;padding:28px 24px;text-align:center;box-shadow:0 4px 20px rgba(0,0,0,.07)}
+.done-ico{font-size:3.5rem;display:block;margin-bottom:10px;animation:pop .5s ease both}
+@keyframes pop{from{transform:scale(0);opacity:0}to{transform:scale(1);opacity:1}}
+.done-title{font-family:'Baloo 2',cursive;font-size:1.4rem;font-weight:800;color:var(--dark);margin-bottom:8px}
+.done-msg{font-size:.88rem;color:var(--muted);line-height:1.7;margin-bottom:20px}
+.btn-next{display:block;width:100%;padding:16px;background:linear-gradient(135deg,var(--c),var(--cd));border:none;border-radius:16px;font-family:'Baloo 2',cursive;font-size:1rem;font-weight:800;color:#fff;cursor:pointer;text-decoration:none;text-align:center;transition:all .25s;box-shadow:0 4px 16px var(--sh)}
+.btn-next:hover{transform:translateY(-3px)}
+
+.btn-back{display:block;width:100%;padding:13px;background:transparent;border:2px solid #e2e8f0;border-radius:14px;color:var(--muted);font-family:'Nunito',sans-serif;font-weight:700;font-size:.82rem;text-decoration:none;text-align:center;transition:all .3s}
+.btn-back:hover{border-color:var(--dark);color:var(--dark)}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+.fu{animation:fadeUp .5s ease both}.d1{animation-delay:.1s}.d2{animation-delay:.2s}.d3{animation-delay:.3s}.d4{animation-delay:.4s}
+</style>
+</head>
+<body>
+<nav><a href="index.html" class="nb">🎓 JPO Albert Camus</a><div class="ns" id="nscore">⭐ 0 pts</div></nav>
+
+<div class="page">
+
+  <div class="hero fu">
+    <span class="htag">📍 Arrêt 6 · Santé & Bien-être</span>
+    <span class="hico">🌿</span>
+    <h1 class="htitle">Accompagnement santé et santé mentale</h1>
+    <p class="hsub">Le lycée prend soin de toi — corps et esprit. Découvre les dispositifs d'accompagnement disponibles !</p>
+  </div>
+
+  <div class="card fu d1">
+    <div class="ctitle">💚 Les dispositifs de bien-être</div>
+    <div class="fgrid">
+
+      <div class="fi">
+        <span class="fie">🧘</span>
+        <div>
+          <div class="fin">Espace ZEN — à l'infirmerie</div>
+          <div class="fid">Un espace calme et bienveillant à l'infirmerie pour souffler, se recentrer et parler en toute confiance. Accessible à tous les élèves.</div>
+        </div>
+      </div>
+
+      <div class="fi">
+        <span class="fie">🤝</span>
+        <div>
+          <div class="fin">Tutorat — Confiance en soi</div>
+          <div class="fid">Un accompagnement personnalisé par des pairs ou des adultes pour renforcer l'estime de soi, la motivation et la réussite scolaire.</div>
+        </div>
+      </div>
+
+      <div class="fi">
+        <span class="fie">💬</span>
+        <div>
+          <div class="fin">EVARS — Éduquer à la Vie Affective, Relationnelle et à la Sexualité</div>
+          <div class="fid">Un programme d'éducation à la vie affective, relationnelle et à la sexualité pour permettre à chaque élève de se construire en toute sérénité et bienveillance.</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="done-box fu d2">
+    <span class="done-ico">✅</span>
+    <div class="done-title">Arrêt découvert !</div>
+    <div class="done-msg">Tu as découvert les dispositifs d'accompagnement santé du lycée Albert Camus. Prends soin de toi, c'est important ! 💚</div>
+    <a href="plan.html" class="btn-next">➡️ Retour au parcours</a>
+  </div>
+
+  <a href="plan.html" class="btn-back fu d3">← Retour au plan</a>
+
+</div>
+
+<script>
+function getScore(){try{return JSON.parse(localStorage.getItem('jpoScore')||'{}')}catch{return{}}}
+function totalScore(){return Object.values(getScore()).reduce(function(a,b){return a+b},0)}
+
+// Marquer cet arrêt comme visité (0 pts car pas de quiz)
+function markVisited(){
+  var s=getScore();
+  if(s['sante']===undefined){
+    s['sante']=0;
+    localStorage.setItem('jpoScore',JSON.stringify(s));
+  }
+}
+
+markVisited();
+document.getElementById('nscore').textContent='⭐ '+totalScore()+' pts';
+</script>
+</body>
+</html>
